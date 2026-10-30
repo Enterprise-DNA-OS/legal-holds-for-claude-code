@@ -1,43 +1,18 @@
-# Legal Holds for Claude Code: operating instructions
+# Legal Holds for Claude Code
 
-This file is the brain. Claude Code reads it at the start of every session. It says who this is for, how work gets done, and the one right way to do each recurring job.
+One private database per business, one trusted operator. This is a records desk, not a preservation service or custodian portal.
 
-## Who this is for
+- Read actual command output before answering. Resolve ambiguity with an exact code or email.
+- Never send, publish, delete, freeze mailboxes or release source-system preservation. Generated notices and worksheets are drafts for counsel.
+- Record only real external evidence. Acknowledgement is not inferred from a draft or a recorded name. Operator and authority labels are not authenticated signatures.
+- Counsel defines scope and reviews. IT implements preservation in the source systems. See docs/compliance.md for the limited checks.
+- Every mutation uses --actor. Use --dry-run for import previews. Changed imports are rejected for reconciliation. Imported holds stay drafts.
+- Release records counsel’s approval and reports overlapping holds. It never changes source systems or deletes evidence.
+- Do not expose the owner connection. Database owners can bypass checks. No shared-user authentication is supplied. Keep credentials, evidence and exports outside Git.
+- Back up before changing schema. Use additive migrations, temporary demo data and npm test. Never seed a working database.
 
-- **Business:** [YOUR BUSINESS]
-- **Operator:** [YOUR NAME], [your role]
-- **What matters most:** [the one or two outcomes you care about]
+The one CLI is scripts/holds.mjs. Commands live in .claude/commands/ for Claude Code, Codex, OpenCode and Cursor. There is no second command library. npm run migrate applies migrations. npm run seed adds fictional demo data, only in a disposable database. npm run demo uses a temporary database and removes it after the demonstration.
 
-Fill this in once. A worker with context knows. A worker without it guesses.
+Use /attention first, then /chase, /departures, /reviews and /compliance. /weekly-review writes from three real command results. /customise changes fields and rules, /new-view adds a read-only report. npm run view and npm run docs use brand.json.
 
-## How to work
-
-1. **Take a brief, not a script.** The operator describes the outcome. You run the right command and present the answer.
-2. **Read before you write.** Before drafting anything about a record, read its full history first.
-3. **Plain language.** Short sentences. No filler. Numbers in tables.
-4. **Silent success, loud problems.** No play-by-play. Say what broke and what you did about it.
-5. **Stop at the line.** Anything that sends, deletes, or faces a customer waits for a yes in this session.
-
-## Routing table: one right way for each recurring job
-
-| When the operator asks for... | Use this |
-|---|---|
-| <!-- TODO(author): one row per slash command --> | `/...` |
-
-If an ask fits nothing here, run the CLI directly (`npm run <cli> -- --help`) and then propose a new command for it.
-
-## Hard rules
-
-- Never send email or messages from here. Draft to `drafts/`, a person sends.
-- Never delete records without an explicit yes in this session. Prefer marking closed or archived.
-- Never invent a record. If a name is ambiguous, list the candidates and ask.
-- The database is the source of truth. If the answer is not in it, say so.
-
-## Where things live
-
-- `scripts/` the CLI. `scripts/lib/db.mjs` picks `DATABASE_URL` (Postgres, Supabase) or the embedded database in `.data/`.
-- `supabase/migrations/` the schema, plain SQL. `npm run migrate` applies it.
-- `.claude/commands/` the slash commands. Add one every time the same ask comes twice.
-- `docs/` the thesis and the guide for moving off Exterro Legal Hold.
-
-Built by Enterprise DNA. Installed and run for you as part of Omni: https://enterprisedna.co/omni/instead-of/exterro-legal-hold
+Omni by Enterprise DNA: https://enterprisedna.co/omni/book?offer=replace-software&utm_campaign=exterro-legal-hold&utm_medium=readme

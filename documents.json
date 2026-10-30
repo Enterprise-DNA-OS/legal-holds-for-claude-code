@@ -1,11 +1,71 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
-    "file": "name",
+    "name": "hold-notice",
+    "title": "Preservation instruction draft",
+    "for_each": "select id,code from holds order by code",
+    "file": "code",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Hold scope",
+        "layout": "record",
+        "note": "DRAFT for counsel review. Not sent. This document does not freeze or release data.",
+        "sql": "select code,name,scope,status,review_due,release_authority,release_evidence from holds where id=$1"
+      },
+      {
+        "title": "Custodians and evidence",
+        "sql": "select c.name,c.email,a.notice_on,a.notice_ref,a.acknowledged_on,a.acknowledgement_ref from assignments a join custodians c on c.id=a.custodian_id where a.hold_id=$1 order by c.name"
+      },
+      {
+        "title": "Other unreleased holds for these people",
+        "note": "Never remove source-system preservation without checking all overlapping obligations.",
+        "sql": "select distinct c.name,h.code as other_hold from assignments a join custodians c on c.id=a.custodian_id join assignments a2 on a2.custodian_id=c.id join holds h on h.id=a2.hold_id where a.hold_id=$1 and h.id<>$1 and h.status<>'released' order by c.name,h.code"
+      }
+    ]
+  },
+  {
+    "name": "hold-review",
+    "title": "Counsel review worksheet",
+    "for_each": "select id,code from holds order by code",
+    "file": "code",
+    "sections": [
+      {
+        "title": "Hold scope",
+        "layout": "record",
+        "note": "DRAFT for counsel review. Not sent. This document does not freeze or release data.",
+        "sql": "select code,name,scope,status,review_due,release_authority,release_evidence from holds where id=$1"
+      },
+      {
+        "title": "Custodians and evidence",
+        "sql": "select c.name,c.email,a.notice_on,a.notice_ref,a.acknowledged_on,a.acknowledgement_ref from assignments a join custodians c on c.id=a.custodian_id where a.hold_id=$1 order by c.name"
+      },
+      {
+        "title": "Other unreleased holds for these people",
+        "note": "Never remove source-system preservation without checking all overlapping obligations.",
+        "sql": "select distinct c.name,h.code as other_hold from assignments a join custodians c on c.id=a.custodian_id join assignments a2 on a2.custodian_id=c.id join holds h on h.id=a2.hold_id where a.hold_id=$1 and h.id<>$1 and h.status<>'released' order by c.name,h.code"
+      }
+    ]
+  },
+  {
+    "name": "release-review",
+    "title": "Release and overlap worksheet",
+    "for_each": "select id,code from holds order by code",
+    "file": "code",
+    "sections": [
+      {
+        "title": "Hold scope",
+        "layout": "record",
+        "note": "DRAFT for counsel review. Not sent. This document does not freeze or release data.",
+        "sql": "select code,name,scope,status,review_due,release_authority,release_evidence from holds where id=$1"
+      },
+      {
+        "title": "Custodians and evidence",
+        "sql": "select c.name,c.email,a.notice_on,a.notice_ref,a.acknowledged_on,a.acknowledgement_ref from assignments a join custodians c on c.id=a.custodian_id where a.hold_id=$1 order by c.name"
+      },
+      {
+        "title": "Other unreleased holds for these people",
+        "note": "Never remove source-system preservation without checking all overlapping obligations.",
+        "sql": "select distinct c.name,h.code as other_hold from assignments a join custodians c on c.id=a.custodian_id join assignments a2 on a2.custodian_id=c.id join holds h on h.id=a2.hold_id where a.hold_id=$1 and h.id<>$1 and h.status<>'released' order by c.name,h.code"
+      }
     ]
   }
 ]

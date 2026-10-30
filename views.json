@@ -1,13 +1,30 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Legal Holds for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Legal hold review",
+    "subtitle": "Local records. Recorded evidence is not live preservation.",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Reviews due",
+        "sql": "select code,name,status,review_due from holds where status<>'released' order by review_due"
+      },
+      {
+        "title": "Acknowledgements to chase",
+        "sql": "select hold,custodian,response_due,reason from v_chase order by response_due"
+      },
+      {
+        "title": "Preservation exceptions",
+        "sql": "select hold,custodian,system_name,owner,state,attention from v_preservation where attention<>'recorded confirmation'"
+      }
+    ]
+  },
+  {
+    "name": "departures",
+    "title": "Departure preservation handover",
+    "sections": [
+      {
+        "title": "People leaving within thirty days",
+        "sql": "select name,email,leaving_on,hold,confirmations from v_departures order by leaving_on"
       }
     ]
   }
